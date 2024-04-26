@@ -1,11 +1,20 @@
 import PropTypes from 'prop-types';
 import css from './contacs.module.css';
+import { useState } from 'react'; // Importujemy hook useState
 
 // Definicja komponentu Contacts
 export const Contacts = ({ contacts, deleteContact }) => {
+  // Stan dla kontaktu, który zostanie zaznaczony do usunięcia
+  const [contactToDelete, setContactToDelete] = useState(null);
+
   // Funkcja obsługująca usuwanie kontaktu
-  const handleDelete = id => {
+  const handleDelete = (id) => {
     deleteContact(id); // Wywołanie funkcji deleteContact 
+  };
+
+  // Funkcja obsługująca zaznaczenie kontaktu do usunięcia
+  const handleSelectContact = (id) => {
+    setContactToDelete(id);
   };
 
   // Renderowanie listy kontaktów
@@ -25,8 +34,23 @@ export const Contacts = ({ contacts, deleteContact }) => {
           >
             Delete
           </button>
+          {/* Przycisk do zaznaczenia kontaktu do usunięcia */}
+          <button
+            className={css.btn}
+            type="button"
+            onClick={() => handleSelectContact(id)} // Obsługa kliknięcia przycisku zaznaczenia kontaktu do usunięcia
+          >
+            Select
+          </button>
         </li>
       ))}
+      {/* Wyświetlenie kontaktu, który ma zostać usunięty */}
+      {contactToDelete && (
+        <li className={css.item}>
+          <span>Contact to delete:</span>
+          <span>{contacts.find((contact) => contact.id === contactToDelete)?.name}</span>
+        </li>
+      )}
     </ul>
   );
 };
@@ -41,3 +65,4 @@ Contacts.propTypes = {
     })
   ).isRequired,
 };
+
