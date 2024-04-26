@@ -15,12 +15,16 @@ export const App = () => {
   }, []);
 
   const onChangeInput = event => {
-    const { name, value } = event.currentTarget;
+    const { value } = event.currentTarget;
     setFilter(value);
   };
 
   const addContact = ({ name, number }) => {
-    if (contacts.some(value => value.name.toLocaleLowerCase() === name.toLocaleLowerCase())) {
+    if (
+      contacts.some(
+        contact => contact.name.toLowerCase() === name.toLowerCase()
+      )
+    ) {
       alert(`${name} is already in contacts`);
     } else {
       const newContact = { id: nanoid(), name: name, number: number };
